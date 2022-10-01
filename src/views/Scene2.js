@@ -63,17 +63,98 @@ export default function Scene2({ ...props }) {
          [3500, 44, 1400],
          [3500, 44, 2400]
           ]
+      
+
+          const level4 =
+          [[8500, 44, 0],
+          [7900, 44, -1000],
+          [7900, 44, 1000],
+          [8500, 44, 2000],
+          [7000, 44, 0],
+          [7000, 44, -1000],
+          [6500, 44, 1000],
+          [7000, 44, 2000],
+ 
+ 
+          [6500, 44, 400],
+          [5500, 44, -1400],
+          [5500, 44, 1400],
+          [6500, 44, 2400],
+          [3500, 44, 0],
+          [4500, 44, -1000],
+          [4500, 44, -400],
+          [4500, 44, 200],
+          [4500, 44, 2400],
+          [3500, 44, 1400],
+          [3500, 44, 2400],
+
+
+          [2500, 44, 0],
+          [1600, 44, -1000],
+          [1600, 44, 1000],
+          [2500, 44, 2000],
+          [1000, 44, 0],
+          [1000, 44, -1000],
+          [500, 44, 1000],
+          [1000, 44, 2000],
+           ]
+
+          
+           const level5 =
+           [[8500, 44, 0],
+           [7900, 44, -1000],
+           [7900, 44, 1000],
+           [8500, 44, 2000],
+           [7000, 44, 0],
+           [7000, 44, -1000],
+           [6500, 44, 1000],
+           [7000, 44, 2000],
+  
+  
+           [6500, 44, 400],
+           [5500, 44, -1400],
+           [5500, 44, 1400],
+           [6500, 44, 2400],
+           [3500, 44, 0],
+           [4500, 44, -1000],
+           [4500, 44, -400],
+           [4500, 44, 200],
+           [4500, 44, 2400],
+           [3500, 44, 1400],
+           [3500, 44, 2400],
+ 
+ 
+           [2500, 44, 0],
+           [1600, 44, -1000],
+           [1600, 44, 1000],
+           [2500, 44, 2000],
+           [1000, 44, 0],
+           [1000, 44, -1000],
+           [500, 44, 1000],
+           [1000, 44, 2000],
+
+
+           [1500, 44, -400],
+           [600, 44, -1400],
+           [600, 44, 600],
+           [1500, 44, 1400],
+           [0, 44, 0],
+           [0, 44, -1000],
+           [-500, 44, 1000],
+           [0, 44, 2000],
+            ]
+       
 
 
   const [positions, setPositions] = useState(level1)  
-
+  const [maxLevelPos, setmaxLevelPos] = useState(6000) ;
   // const raycast = useForwardRaycast(thePlayer)
   const { left, right, jump } = usePersonControls()
 
 
   useFrame(() => {
     // this use frame does the satelite movment
-    thePlayer.current.position.z+= 10*(Number(left) - Number(right))
+    thePlayer.current.position.z+= speed.current*(Number(left) - Number(right))
     playerBody.current.rotation.z += (Math.PI / 100) * Number(right);
     playerBody.current.rotation.z -= (Math.PI / 100) * Number(left);
     // thePlayer.current.position.x+= 100 * Number(jump);
@@ -91,15 +172,31 @@ export default function Scene2({ ...props }) {
             collusion.current = true
         }
     })
-
-    if(thePlayer.current.position.x<2000){
+    
+    if(thePlayer.current.position.x<maxLevelPos){
       levelUp.current++;
-      if(levelUp.current===2) setPositions(level2)
-      if(levelUp.current===3) setPositions(level3)
-      // if(levelUp===2) setPositions(level2)
+      if(levelUp.current===2){
+        setPositions(level2)
+        speed.current = 30
+      } 
+      if(levelUp.current===3) {
+        setPositions(level3)
+        speed.current = 35
+      }
+        if(levelUp.current===4){
+        setPositions(level4)
+        setmaxLevelPos(0)
+        speed.current = 45
+      } 
+      if(levelUp.current===5){
+        setPositions(level5)
+        setmaxLevelPos(-2000)
+        speed.current = 50
+      }
       // if(levelUp===2) setPositions(level2)
       thePlayer.current.position.x = 12000
       theMap.current.position.x = -10260.21;
+      
     } 
   })
 
@@ -132,6 +229,7 @@ export default function Scene2({ ...props }) {
             {positions.map((pos, index) => 
             <group
                 key={index}
+                // ref={astroidBody}
                 ref = {(element)=>astroids.current.push(element)}
                 name="asteroid"
                 position={pos}
