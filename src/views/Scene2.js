@@ -27,7 +27,25 @@ export default function Scene2({ ...props }) {
           [6500, 44, 0],
           [6500, 44, -800],
           [6500, 44, 800],
-          [6500, 44, 1600]
+          [6500, 44, 1600],
+
+          [5500, 44, 0],
+          [5500, 44, -800],
+          [5500, 44, 800],
+          [5500, 44, 1600],
+          [4500, 44, 0],
+          [4500, 44, -800],
+          [4500, 44, 800],
+          [4500, 44, 1600],
+
+          [2500, 44, 0],
+          [2500, 44, -800],
+          [2500, 44, 800],
+          [2500, 44, 1600],
+          [500, 44, 0],
+          [500, 44, -800],
+          [500, 44, 800],
+          [500, 44, 1600]
           ]
     
     const level2 =
@@ -38,8 +56,28 @@ export default function Scene2({ ...props }) {
          [7000, 44, 0],
          [7000, 44, -1000],
          [6500, 44, 1000],
-         [7000, 44, 2000]
+         [7000, 44, 2000],
+
+         [5500, 44, 0],
+         [4000, 44, -1000],
+         [4000, 44, 1000],
+         [5500, 44, 2000],
+         [2500, 44, 0],
+         [2500, 44, -1000],
+         [4500, 44, 1000],
+         [2500, 44, 2000],
+
+         [500, 44, 0],
+         [2000, 44, -1000],
+         [2000, 44, 1000],
+         [2500, 44, 2000],
+         [2000, 44, 0],
+         [2000, 44, -1000],
+         [3500, 44, 1000],
+         [2000, 44, 2000]
           ]
+
+
     const level3 =
          [[8500, 44, 0],
          [7900, 44, -1000],
@@ -61,7 +99,19 @@ export default function Scene2({ ...props }) {
          [4500, 44, 200],
          [4500, 44, 2400],
          [3500, 44, 1400],
-         [3500, 44, 2400]
+         [3500, 44, 2400],
+
+         [2500, 44, 400],
+         [1500, 44, -1400],
+         [1500, 44, 1400],
+         [2500, 44, 2400],
+         [500, 44, 0],
+         [1500, 44, -1000],
+         [1500, 44, -400],
+         [1500, 44, 200],
+         [1500, 44, 2400],
+         [500, 44, 1400],
+         [500, 44, 2400]
           ]
       
 
@@ -97,6 +147,29 @@ export default function Scene2({ ...props }) {
           [1000, 44, -1000],
           [500, 44, 1000],
           [1000, 44, 2000],
+
+
+          [0, 44, 0],
+          [-1000, 44, -1000],
+          [-1000, 44, 1000],
+          [0, 44, 2000],
+          [-2000, 44, 0],
+          [-2000, 44, -1000],
+          [-1500, 44, 1000],
+          [-2000, 44, 2000],
+
+
+          [-1500, 44, 0],
+          [-3000, 44, -1000],
+          [-3000, 44, 1000],
+          [0, 44, 2000],
+          [-5000, 44, 0],
+          [-5000, 44, -1000],
+          [-300, 44, 1000],
+          [-4000, 44, 2000],
+
+
+          
            ]
 
           
@@ -142,12 +215,34 @@ export default function Scene2({ ...props }) {
            [0, 44, -1000],
            [-500, 44, 1000],
            [0, 44, 2000],
+
+           [-3000, 44, 0],
+           [-1500, 44, -1000],
+           [-1500, 44, 1000],
+           [-3000, 44, 2000],
+           [-3900, 44, 0],
+           [-3900, 44, -1000],
+           [-2000, 44, 1000],
+           [-3900, 44, 2000],
+  
+  
+           [-4500, 44, 400],
+           [-5500, 44, -1400],
+           [-5500, 44, 1400],
+           [-4500, 44, 2400],
+           [-6500, 44, 0],
+           [-7500, 44, -1000],
+           [-7500, 44, -400],
+           [-6500, 44, 200],
+           [-7500, 44, 2400],
+           [-7500, 44, 1400],
+           [-7500, 44, 2400],
             ]
        
 
 
   const [positions, setPositions] = useState(level1)  
-  const [maxLevelPos, setmaxLevelPos] = useState(6000) ;
+  const [maxLevelPos, setmaxLevelPos] = useState(-2000) ;
   // const raycast = useForwardRaycast(thePlayer)
   const { left, right, jump } = usePersonControls()
 
@@ -170,6 +265,11 @@ export default function Scene2({ ...props }) {
         && !collusion.current ){
             console.log('***** astroid collusion ********');
             collusion.current = true
+            setPositions(positions)
+            thePlayer.current.position.x = 12000
+            theMap.current.position.x = -10260.21;
+            collusion.current = false;
+
         }
     })
     
@@ -181,16 +281,17 @@ export default function Scene2({ ...props }) {
       } 
       if(levelUp.current===3) {
         setPositions(level3)
+        setmaxLevelPos(-5000)
         speed.current = 35
       }
         if(levelUp.current===4){
         setPositions(level4)
-        setmaxLevelPos(0)
+        setmaxLevelPos(-7000)
         speed.current = 45
       } 
       if(levelUp.current===5){
         setPositions(level5)
-        setmaxLevelPos(-2000)
+        setmaxLevelPos(-13000)
         speed.current = 50
       }
       // if(levelUp===2) setPositions(level2)
@@ -201,6 +302,7 @@ export default function Scene2({ ...props }) {
   })
 
 
+  
   useFrame(() => {
     if(!collusion.current) thePlayer.current.position.x -= speed.current;
     if(!collusion.current) theMap.current.position.x += speed.current;
@@ -254,7 +356,7 @@ export default function Scene2({ ...props }) {
             material={materials['ending Material']}
             castShadow
             receiveShadow
-            position={[-9010.79, -45.69, 0]}
+            position={[-20010.79, -45.69, 0]}
             rotation={[-Math.PI / 2, 0, -Math.PI / 2]}
             scale={[49.67, 1, 1]}
           />
