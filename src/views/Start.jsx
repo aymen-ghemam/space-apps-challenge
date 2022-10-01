@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react'
 
-const Start = () => {
+const Start = ({setPage}) => {
     useEffect(() => {
         // DOM selectors
         const stars = document.getElementById('stars');
@@ -11,7 +11,7 @@ const Start = () => {
         var timeout;
 
         // global variables
-        let screen, starsElements, starsParams = { speed: 5, number: 400, extinction: 4};
+        let screen, starsElements, starsParams = { speed: 3, number: 400, extinction: 4};
 
         // run stars
         setupStars();
@@ -85,19 +85,51 @@ const Start = () => {
             window.requestAnimationFrame(updateStars);
         }
 
+        const animateCSS = (element, animation, prefix = 'animate__') =>
+        // We create a Promise and return it
+            new Promise((resolve, reject) => {
+            const animationName = `${prefix}${animation}`;
+            const node = document.querySelector(element);
+
+            node.classList.add(`${prefix}animated`, animationName);
+
+            // When the animation ends, we clean the classes and resolve the Promise
+            function handleAnimationEnd(event) {
+                event.stopPropagation();
+                node.classList.remove(`${prefix}animated`, animationName);
+                resolve('Animation ended');
+            }
+
+            node.addEventListener('animationend', handleAnimationEnd, {once: true});
+            });
+
+
+        // document.getElementById('start').addEventListener('click', ()=>{
+        //     animateCSS('.wrapper', 'zoomOutDown').then(() => {
+        //         document.getElementById('header').classList.add('hidden')
+        //         document.getElementById('sun').classList.remove('hidden')
+        //         animateCSS('#video1', 'zoomInUp').then(()=>{
+        //             document.getElementById('canvas').classList.add('hidden')
+        //         })
+        //     });
+        // })
+
     }, [])
     
   return (
-    <header>
-      <canvas id="stars"></canvas>
-      <div>
-        <img className="logo" src="/assets/logo.png" alt="" />
+    <header id="header" class="container">
+      <div class="wrapper animate__animated animate__pulse animate__slow animate__infinite">
+        <div>
+          <img class="logo" src="./assets/logo.png" alt="" />
+        </div>
+
+        {/* <div class="slider">
+          <input type="range" min="0.5" max="15" value="2" step="0.5" />
+          <span id="speed"></span>
+        </div> */}
       </div>
 
-      {/* <div class="slider">
-        <input type="range" min="0.5" max="15" value="2" step="0.5" />
-        <span id="speed"></span>
-      </div> */}
+      <button id="start" onClick={()=>setPage(1)}>Start</button>
     </header>
   )
 }
