@@ -4,6 +4,7 @@ import { OrbitControls } from '@react-three/drei'
 import Scene from './views/Scene'
 import Scene1 from './views/Scene1'
 import Start from './views/Start';
+import Scene2 from './views/Scene2'
 
 export default function App() {
   const [page, setPage] = useState(1);
@@ -13,7 +14,7 @@ export default function App() {
       {page === 1 && 
       <Suspense fallback={null}>
         <Canvas shadows flat linear>
-          <Scene1 />
+          <Scene2 />
           <OrbitControls />
         </Canvas>
       </Suspense>}
