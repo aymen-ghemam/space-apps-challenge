@@ -12,11 +12,12 @@ export default function Scene2({ ...props }) {
   const { nodes, materials } = useSpline('https://prod.spline.design/iT1Og4mFFO46DKz5/scene.splinecode')
 
   const theMap = useRef()
-  const speed = useRef(15)
+  const speed = useRef(20)
   const levelUp = useRef(1)
   const thePlayer = useRef()
   const astroids = useRef([])
   const collusion = useRef(false)
+  const playerBody = useRef()
 
   const level1 =
          [[7900, 44, 0],
@@ -72,7 +73,9 @@ export default function Scene2({ ...props }) {
 
   useFrame(() => {
     // this use frame does the satelite movment
-    thePlayer.current.position.z+= 10*(Number(right) - Number(left))
+    thePlayer.current.position.z+= 10*(Number(left) - Number(right))
+    playerBody.current.rotation.z += (Math.PI / 100) * Number(right);
+    playerBody.current.rotation.z -= (Math.PI / 100) * Number(left);
     // thePlayer.current.position.x+= 100 * Number(jump);
     if(jump){
       thePlayer.current.position.x = 12000
@@ -114,6 +117,7 @@ export default function Scene2({ ...props }) {
 
             <group ref={thePlayer} name="player" position={[12000, 44, -16]} rotation={[-Math.PI / 2, 0, 1.59]}>
                 <mesh
+                    ref={playerBody}
                     name="Cylinder003"
                     geometry={nodes.Cylinder003.geometry}
                     material={nodes.Cylinder003.material}
