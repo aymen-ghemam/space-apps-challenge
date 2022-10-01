@@ -6,10 +6,11 @@ import useSpline from '@splinetool/r3f-spline'
 import { PerspectiveCamera } from '@react-three/drei'
 import { useFrame, useThree } from '@react-three/fiber'
 
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useMemo } from "react";
 import { usePersonControls } from './hooks/useKeyboardControls';
 import { useForwardRaycast } from './hooks/useForwardRaycast';
 import { useBox } from '@react-three/cannon';
+import { Object3D, Raycaster, Vector3 } from 'three'
 
 export default function Scene({ ...props }) {
   const { nodes, materials } = useSpline('https://prod.spline.design/iT1Og4mFFO46DKz5/scene.splinecode')
@@ -18,14 +19,23 @@ export default function Scene({ ...props }) {
   // use refs let us  modify the stata of the objects in the scene example position for movment
   const theMap = useRef()
   const thePlayer = useRef()
+  const astroid = useRef()
   // const raycast = useForwardRaycast(thePlayer)
-  const { left, right } = usePersonControls()
+  const { left, right, jump } = usePersonControls()
   
   
   useFrame(() => {
     // this use frame does the satelite movment
     thePlayer.current.position.z+= 10*(Number(right) - Number(left))
+    // thePlayer.current.position.x+= 100 * Number(jump);
+    if(jump){
+      thePlayer.current.position = [9000, 44, -16]
+    }
+    // if((thePlayer.current.position.x <= astroid.current.position.x +600) && (thePlayer.current.position.z-100 >= astroid.current.position.z) ){
+    //   console.log('****************');
+    // }
     
+    // console.log(thePlayer.current.position.z +' - '+ astroid.current.position.z);
     // checking for collision 
     // const intersections = raycast()
     // thePlayer.current.getWorldDirection(x)
@@ -39,13 +49,16 @@ export default function Scene({ ...props }) {
   // TODO: for future if gonna add the skip some part of the map  just make the ending closer
   useFrame(() => {
     // console.log(theMap.current.position);
-    theMap.current.position.x+=10
+    // theMap.current.position.x+=5
+    thePlayer.current.position.x -= 5
   })
   return (
     <>
       <color attach="background" args={['#696771']} />
       <group {...props} dispose={null}>
-        <group ref={thePlayer} name="player" position={[-108.13, 162.16, -109.85]} rotation={[-Math.PI / 2, 0, 1.59]}>
+        <group ref={theMap} name="Group" position={[-10260.21, 79.69, 61]}>
+
+        <group ref={thePlayer} name="player" position={[9000, 44, -16]} rotation={[-Math.PI / 2, 0, 1.59]}>
           <mesh
             name="Cylinder003"
             geometry={nodes.Cylinder003.geometry}
@@ -57,7 +70,6 @@ export default function Scene({ ...props }) {
             scale={[102.54, 110.33, 100.26]}
           />
         </group>
-        <group ref={theMap} name="Group" position={[-10260.21, 79.69, 61]}>
           <group
             name="asteroid 9"
             position={[6736.6, 43.1, 554.52]}
@@ -171,8 +183,9 @@ export default function Scene({ ...props }) {
             />
           </group>
           <group
+            ref = {astroid}
             name="asteroid"
-            position={[7899.57, 44.32, -16.33]}
+            position={[7900, 44, -16]}
             rotation={[Math.PI / 2, 0, 0]}
             scale={[1.16, 1.2, 1.16]}
           >
