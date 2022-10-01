@@ -259,15 +259,14 @@ export default function Scene2({ ...props }) {
       if(levelUp.current===2){
         setPositions(level2)
         speed.current = 30
-        props.play('level2')
         props.setLevel({title: 'Level 2'})
       } 
       if(levelUp.current===3) {
         setPositions(level3)
         setmaxLevelPos(-5000)
         speed.current = 35
-        props.play('level3')
-        props.setLevel({title: 'Level 3'})
+        props.play('level2')
+        props.setLevel({title: 'Level 3', text: 'We are within the range of gravity of Venus! This shall strengthen the space Craft momentum'})
       }
       if(levelUp.current===4){
         setPositions(level4)
@@ -280,6 +279,8 @@ export default function Scene2({ ...props }) {
         setPositions(level5)
         setmaxLevelPos(-2000)
         speed.current = 50
+        props.play('level3')
+        props.setLevel({title: 'Level 5', text: 'We are really close to the corona now, but the solar wind and storms may affect the probe!'})
       }
       // if(levelUp===2) setPositions(level2)
       thePlayer.current.position.x = 12000
