@@ -138,9 +138,6 @@ const Start = ({setPage}) => {
     
   return (
     <header id="header" className="container" ref={header}>
-    <div
-      className="cursor animate__animated animate__swing animate__infinite"
-    ></div>
       <div className="wrapper animate__animated animate__pulse animate__slow animate__infinite" ref={wrapper}>
         <div>
           <img className="logo" src="./assets/logo.png" alt="" />

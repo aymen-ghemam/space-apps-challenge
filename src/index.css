@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Bungee+Spice&family=Inter:wght@500&family=Poppins:wght@500;600;700&display=swap');
+
 body{
   padding: 0;
   margin: 0;
@@ -8,6 +10,7 @@ body{
   background-color: #000;
   position: relative;
   overflow-y: hidden;
+  /* font-family: 'Bungee Spice', cursive; */
 }
 #root{
   width: 100%;
@@ -25,7 +28,6 @@ body{
 }
 
 button{
-  background-color: white;
   position: absolute;
   bottom: 2em;
   left: 50%;
@@ -34,12 +36,14 @@ button{
   width: 200px;
   height: 50px;
   font-size: 24px;
+  color: #fff;
+  background-color: rgba(0, 0, 0, 0);
 }
 
 button:hover{
-  background-color: rgba(0, 0, 0, 0);
+  background-color: #fff;
   border: 2px solid #fff;
-  color: #fff;
+  color: #000;
 }
 
 .slider {
@@ -76,6 +80,7 @@ button:hover{
 .cursor{
   z-index: 9999;
   position: fixed;
+  top: -2em;
   width: 25px;
   height: 25px;
   pointer-events: none;
@@ -103,3 +108,16 @@ video{
 .no-cursor{
   cursor: none;
 }
+
+.level{
+  position: absolute;
+  left: 1em;
+  width: 300px;
+  z-index: 999;
+  /* background-color: white; */
+  color: white;
+}
+.level h1{
+  font-family: 'Bungee Spice', cursive;
+}
+

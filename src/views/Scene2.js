@@ -142,15 +142,16 @@ export default function Scene2({ ...props }) {
            [0, 44, -1000],
            [-500, 44, 1000],
            [0, 44, 2000],
-            ]
+            ];
        
-
-
   const [positions, setPositions] = useState(level1)  
   const [maxLevelPos, setmaxLevelPos] = useState(6000) ;
   // const raycast = useForwardRaycast(thePlayer)
   const { left, right, jump } = usePersonControls()
-
+  useEffect(()=>{
+    props.play('level1')
+    props.setLevel({title: 'Level 1', text: "This is it, we are at the eighth revolution around the sun, not much left until we make it to the sun's atmosphere"})
+  }, [])
 
   useFrame(() => {
     // this use frame does the satelite movment
@@ -178,20 +179,27 @@ export default function Scene2({ ...props }) {
       if(levelUp.current===2){
         setPositions(level2)
         speed.current = 30
+        props.play('level2')
+        props.setLevel({title: 'Level 2'})
       } 
       if(levelUp.current===3) {
         setPositions(level3)
         speed.current = 35
+        props.play('level3')
+        props.setLevel({title: 'Level 3'})
       }
-        if(levelUp.current===4){
+      if(levelUp.current===4){
         setPositions(level4)
         setmaxLevelPos(0)
         speed.current = 45
+        // props.play('level4')
+        props.setLevel({title: 'Level 4'})
       } 
       if(levelUp.current===5){
         setPositions(level5)
         setmaxLevelPos(-2000)
-        speed.current = 50
+        speed.current = 50;
+        props.setLevel({title: 'Level 5'})
       }
       // if(levelUp===2) setPositions(level2)
       thePlayer.current.position.x = 12000
