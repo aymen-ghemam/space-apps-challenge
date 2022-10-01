@@ -15,6 +15,8 @@ export default function Scene2({ ...props }) {
   const speed = useRef(20)
   const levelUp = useRef(1)
   const thePlayer = useRef()
+  const wallRight = useRef()
+  const wallLeft = useRef()
   const astroids = useRef([])
   const collusion = useRef(false)
   const playerBody = useRef()
@@ -249,6 +251,7 @@ export default function Scene2({ ...props }) {
 
   useFrame(() => {
     // this use frame does the satelite movment
+    // if(wallRight.current.position.z < thePlayer.current.position.z && thePlayer.current.position.z < wallRight.current.position.z)
     thePlayer.current.position.z+= speed.current*(Number(left) - Number(right))
     playerBody.current.rotation.z += (Math.PI / 100) * Number(right);
     playerBody.current.rotation.z -= (Math.PI / 100) * Number(left);
@@ -361,17 +364,19 @@ export default function Scene2({ ...props }) {
             scale={[49.67, 1, 1]}
           />
           <mesh
+            ref = {wallRight}
             name="right wall"
             geometry={nodes['right wall'].geometry}
-            material={materials['right wall Material']}
-            position={[372.02, -19.73, -1730.39]}
+            material={materials['ending Material']}
+            position={[372.02, -19.73, -1150]}
             scale={[200, 1, 1]}
           />
           <mesh
+            ref = {wallLeft}
             name="left wall"
             geometry={nodes['left wall'].geometry}
-            material={materials['left wall Material']}
-            position={[460.21, 0, 1526.91]}
+            material={materials['ending Material']}
+            position={[460.21, 0, 1900]}
             scale={[200, 1, 1]}
           />
           <mesh
