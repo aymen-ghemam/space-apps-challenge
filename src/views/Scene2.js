@@ -12,16 +12,59 @@ export default function Scene2({ ...props }) {
   const { nodes, materials } = useSpline('https://prod.spline.design/iT1Og4mFFO46DKz5/scene.splinecode')
 
   const theMap = useRef()
-  const speed = useRef(5)
+  const speed = useRef(15)
+  const levelUp = useRef(1)
   const thePlayer = useRef()
   const astroids = useRef([])
   const collusion = useRef(false)
 
-  const [positions, setPositions] = useState([
-    [7900, 44, 0],
-    [7900, 44, 600],
-    [7900, 44, -600],
-  ])  
+  const level1 =
+         [[7900, 44, 0],
+          [7900, 44, -800],
+          [7900, 44, 800],
+          [7900, 44, 1600],
+          [6500, 44, 0],
+          [6500, 44, -800],
+          [6500, 44, 800],
+          [6500, 44, 1600]
+          ]
+    
+    const level2 =
+         [[8500, 44, 0],
+         [7900, 44, -1000],
+         [7900, 44, 1000],
+         [8500, 44, 2000],
+         [7000, 44, 0],
+         [7000, 44, -1000],
+         [6500, 44, 1000],
+         [7000, 44, 2000]
+          ]
+    const level3 =
+         [[8500, 44, 0],
+         [7900, 44, -1000],
+         [7900, 44, 1000],
+         [8500, 44, 2000],
+         [7000, 44, 0],
+         [7000, 44, -1000],
+         [6500, 44, 1000],
+         [7000, 44, 2000],
+
+
+         [6500, 44, 400],
+         [5500, 44, -1400],
+         [5500, 44, 1400],
+         [6500, 44, 2400],
+         [3500, 44, 0],
+         [4500, 44, -1000],
+         [4500, 44, -400],
+         [4500, 44, 200],
+         [4500, 44, 2400],
+         [3500, 44, 1400],
+         [3500, 44, 2400]
+          ]
+
+
+  const [positions, setPositions] = useState(level1)  
 
   // const raycast = useForwardRaycast(thePlayer)
   const { left, right, jump } = usePersonControls()
@@ -37,16 +80,26 @@ export default function Scene2({ ...props }) {
 
     positions.forEach(elm=>{
         if((thePlayer.current.position.x >= elm[0] -300) 
-        &&(thePlayer.current.position.x <= elm[0] +600) 
-        && (elm[2] + -500<= thePlayer.current.position.z) 
-        &&(thePlayer.current.position.z <= elm[2] +250) 
+        &&(thePlayer.current.position.x <= elm[0] +500) 
+        && (elm[2] + -300<= thePlayer.current.position.z) 
+        &&(thePlayer.current.position.z <= elm[2] +150) 
         && !collusion.current ){
             console.log('***** astroid collusion ********');
             collusion.current = true
         }
     })
 
+    if(thePlayer.current.position.x<2000){
+      levelUp.current++;
+      if(levelUp.current===2) setPositions(level2)
+      if(levelUp.current===3) setPositions(level3)
+      // if(levelUp===2) setPositions(level2)
+      // if(levelUp===2) setPositions(level2)
+      thePlayer.current.position.x = 12000
+      theMap.current.position.x = -10260.21;
+    } 
   })
+
 
   useFrame(() => {
     if(!collusion.current) thePlayer.current.position.x -= speed.current;
@@ -134,7 +187,7 @@ export default function Scene2({ ...props }) {
           far={200000}
           near={5}
           fov={45}
-          position={[2640.15, 1955.11, -32.01]}
+          position={[5000.15, 2200, -32.01]}
           rotation={[-1.59, 1, 1.6]}
         />
         <directionalLight
