@@ -2,6 +2,7 @@ import { Fragment, Suspense, useState } from 'react'
 import { Canvas } from '@react-three/fiber'
 import { OrbitControls } from '@react-three/drei'
 import Scene from './views/Scene'
+import Scene1 from './views/Scene1'
 import Start from './views/Start';
 
 export default function App() {
@@ -12,7 +13,7 @@ export default function App() {
       {page === 1 && 
       <Suspense fallback={null}>
         <Canvas shadows flat linear>
-          <Scene />
+          <Scene1 />
           <OrbitControls />
         </Canvas>
       </Suspense>}

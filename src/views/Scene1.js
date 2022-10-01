@@ -12,13 +12,13 @@ import { useForwardRaycast } from './hooks/useForwardRaycast';
 import { useBox } from '@react-three/cannon';
 import { Object3D, Raycaster, Vector3 } from 'three'
 
-export default function Scene({ ...props }) {
+export default function Scene1({ ...props }) {
   const { nodes, materials } = useSpline('https://prod.spline.design/iT1Og4mFFO46DKz5/scene.splinecode')
   // TODO: make the code reusable for other maps  ifthat gonna happen
   // just make each map a different spline scene and reuse the movment code between them  
   // use refs let us  modify the stata of the objects in the scene example position for movment
   const theMap = useRef()
-  const speed = useRef(5)
+  const speed = useRef(15)
   const thePlayer = useRef()
   const astroid = useRef()
   const astroid1 = useRef()
@@ -28,6 +28,7 @@ export default function Scene({ ...props }) {
   const astroid5 = useRef()
   const astroid6 = useRef()
   const astroid7 = useRef()
+  const listRef = useRef([astroid,astroid1,astroid2,astroid3,astroid4,astroid5,astroid6,astroid7])
   const collusion = useRef(false)
   // const raycast = useForwardRaycast(thePlayer)
   const { left, right, jump } = usePersonControls()
@@ -125,7 +126,7 @@ export default function Scene({ ...props }) {
         <group
             ref = {astroid}
             name="asteroid"
-            position={[7900, 44, 0]}
+            position={[8500, 44, 0]}
             rotation={[Math.PI / 2, 0, 0]}
             scale={[1.16, 1.2, 1.16]}
           >
@@ -142,7 +143,7 @@ export default function Scene({ ...props }) {
           <group
             ref = {astroid1}
             name="asteroid1"
-            position={[7900, 44, -800]}
+            position={[7900, 44, -1000]}
             rotation={[Math.PI / 2, 0, 0]}
             scale={[1.16, 1.2, 1.16]}
           >
@@ -159,7 +160,7 @@ export default function Scene({ ...props }) {
           <group
             ref = {astroid2}
             name="asteroid2"
-            position={[7900, 44, 800]}
+            position={[7900, 44, 1000]}
             rotation={[Math.PI / 2, 0, 0]}
             scale={[1.16, 1.2, 1.16]}
           >
@@ -176,7 +177,7 @@ export default function Scene({ ...props }) {
           <group
             ref = {astroid3}
             name="asteroid3"
-            position={[7900, 44, 1600]}
+            position={[8500, 44, 2000]}
             rotation={[Math.PI / 2, 0, 0]}
             scale={[1.16, 1.2, 1.16]}
           >
@@ -213,7 +214,7 @@ export default function Scene({ ...props }) {
           <group
             ref = {astroid5}
             name="asteroid5"
-            position={[7000, 44, -800]}
+            position={[7000, 44, -1000]}
             rotation={[Math.PI / 2, 0, 0]}
             scale={[1.16, 1.2, 1.16]}
           >
@@ -230,7 +231,7 @@ export default function Scene({ ...props }) {
           <group
             ref = {astroid6}
             name="asteroid6"
-            position={[7000, 44, 800]}
+            position={[6500, 44, 1000]}
             rotation={[Math.PI / 2, 0, 0]}
             scale={[1.16, 1.2, 1.16]}
           >
@@ -247,7 +248,7 @@ export default function Scene({ ...props }) {
           <group
             ref = {astroid7}
             name="asteroid7"
-            position={[7000, 44, 1600]}
+            position={[7000, 44, 2000]}
             rotation={[Math.PI / 2, 0, 0]}
             scale={[1.16, 1.2, 1.16]}
           >
