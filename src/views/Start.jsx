@@ -4,7 +4,7 @@ const Start = ({setPage}) => {
     const wrapper = useRef(null);
     const header = useRef(null);
 
-    const animateCSS = (element, animation, prefix = 'animate__') => {
+    function animateCSS (element, animation, prefix = 'animate__') {
         // We create a Promise and return it
         new Promise((resolve, reject) => {
         const animationName = `${prefix}${animation}`;
@@ -20,17 +20,34 @@ const Start = ({setPage}) => {
         }
 
         element.addEventListener('animationend', handleAnimationEnd, {once: true});
-        });
+        })
+        // .then(e => console.log(''))
     }
 
     const slide = () => {
-        animateCSS(wrapper, 'zoomOutDown').then(() => {
-            // document.getElementById('header').classList.add('hidden')
-            // document.getElementById('sun').classList.remove('hidden')
-            // animateCSS('#video1', 'zoomInUp').then(()=>{
-                // document.getElementById('canvas').classList.add('hidden')
-            // })
-        });
+        const prefix = 'animate__';
+        const animation = 'zoomOutDown'
+        const element = header.current;
+
+        new Promise((resolve, reject) => {
+            const animationName = `${prefix}${animation}`;
+            // const node = document.querySelector(element);
+    
+            element.classList.add(`${prefix}animated`, animationName);
+    
+            // When the animation ends, we clean the classes and resolve the Promise
+            function handleAnimationEnd(event) {
+                event.stopPropagation();
+                element.classList.remove(`${prefix}animated`, animationName);
+                resolve('Animation ended');
+            }
+    
+            element.addEventListener('animationend', handleAnimationEnd, {once: true});
+        }).then(e => {
+            header.current.classList.add('hidden')
+            console.log('here');
+            setPage(1)
+        })
     }
 
     useEffect(() => {
@@ -117,42 +134,16 @@ const Start = ({setPage}) => {
             window.requestAnimationFrame(updateStars);
         }
 
-        // const animateCSS = (element, animation, prefix = 'animate__') =>
-        // // We create a Promise and return it
-        //     new Promise((resolve, reject) => {
-        //     const animationName = `${prefix}${animation}`;
-        //     const node = document.querySelector(element);
-
-        //     node.classList.add(`${prefix}animated`, animationName);
-
-        //     // When the animation ends, we clean the classes and resolve the Promise
-        //     function handleAnimationEnd(event) {
-        //         event.stopPropagation();
-        //         node.classList.remove(`${prefix}animated`, animationName);
-        //         resolve('Animation ended');
-        //     }
-
-        //     node.addEventListener('animationend', handleAnimationEnd, {once: true});
-        //     });
-
-
-        // document.getElementById('start').addEventListener('click', ()=>{
-            // animateCSS('.wrapper', 'zoomOutDown').then(() => {
-            //     document.getElementById('header').classList.add('hidden')
-            //     document.getElementById('sun').classList.remove('hidden')
-            //     animateCSS('#video1', 'zoomInUp').then(()=>{
-            //         document.getElementById('canvas').classList.add('hidden')
-            //     })
-            // });
-        // })
-
     }, [])
     
   return (
-    <header id="header" class="container" ref={header}>
-      <div class="wrapper animate__animated animate__pulse animate__slow animate__infinite" ref={wrapper}>
+    <header id="header" className="container" ref={header}>
+    <div
+      className="cursor animate__animated animate__swing animate__infinite"
+    ></div>
+      <div className="wrapper animate__animated animate__pulse animate__slow animate__infinite" ref={wrapper}>
         <div>
-          <img class="logo" src="./assets/logo.png" alt="" />
+          <img className="logo" src="./assets/logo.png" alt="" />
         </div>
 
         {/* <div class="slider">
@@ -161,7 +152,7 @@ const Start = ({setPage}) => {
         </div> */}
       </div>
 
-      <button id="start" onClick={()=>{setPage(1); slide()}}>Start</button>
+      <button id="start" onClick={()=>{slide()}}>Start</button>
     </header>
   )
 }

@@ -15,7 +15,7 @@ export default function App() {
       {page === 1 && 
       
       <Suspense fallback={null}>
-        <Canvas shadows flat linear className=''>
+        <Canvas shadows flat linear className='no-cursor'>
           <Scene2 />
           <OrbitControls />
         </Canvas>
