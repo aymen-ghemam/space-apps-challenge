@@ -12,7 +12,7 @@ export default function Scene2({ ...props }) {
   const { nodes, materials } = useSpline('https://prod.spline.design/iT1Og4mFFO46DKz5/scene.splinecode')
 
   const theMap = useRef()
-  const speed = useRef(20)
+  const speed = useRef(30)
   const levelUp = useRef(1)
   const thePlayer = useRef()
   const wallRight = useRef()
@@ -232,8 +232,10 @@ export default function Scene2({ ...props }) {
 
   useFrame(() => {
     // this use frame does the satelite movment
-    // if(wallRight.current.position.z < thePlayer.current.position.z && thePlayer.current.position.z < wallRight.current.position.z)
-    thePlayer.current.position.z+= speed.current*(Number(left) - Number(right))
+    if((wallLeft.current.position.z > thePlayer.current.position.z+400))
+      thePlayer.current.position.z+= speed.current*(Number(left) )/2
+    if((thePlayer.current.position.z-250 > wallRight.current.position.z))
+      thePlayer.current.position.z+= speed.current*(- Number(right))/2
     playerBody.current.rotation.z += (Math.PI / 100) * Number(right);
     playerBody.current.rotation.z -= (Math.PI / 100) * Number(left);
     // thePlayer.current.position.x+= 100 * Number(jump);
@@ -260,11 +262,15 @@ export default function Scene2({ ...props }) {
     if(thePlayer.current.position.x<maxLevelPos){
       levelUp.current++;
       if(levelUp.current===2){
+        wallRight.current.position.z = -1300
+        wallLeft.current.position.z = 2350
         setPositions(level2)
         speed.current = 30
         props.setLevel({title: 'Level 2'})
       } 
       if(levelUp.current===3) {
+        wallRight.current.position.z = -1700
+        wallLeft.current.position.z = 2700
         setPositions(level3)
         setmaxLevelPos(-5000)
         speed.current = 35
@@ -274,14 +280,14 @@ export default function Scene2({ ...props }) {
       if(levelUp.current===4){
         setPositions(level4)
         setmaxLevelPos(-7000)
-        speed.current = 45
+        speed.current = 40
         // props.play('level4')
         props.setLevel({title: 'Level 4'})
       } 
       if(levelUp.current===5){
         setPositions(level5)
         setmaxLevelPos(-2000)
-        speed.current = 50
+        // speed.current = 50
         props.play('level3')
         props.setLevel({title: 'Level 5', text: 'We are really close to the corona now, but the solar wind and storms may affect the probe!'})
       }
