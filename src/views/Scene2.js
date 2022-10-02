@@ -227,7 +227,7 @@ export default function Scene2({ ...props }) {
        
 
 
-  const [positions, setPositions] = useState(level6)  
+  const [positions, setPositions] = useState(level1)  
   const [maxLevelPos, setmaxLevelPos] = useState(-2000) ;
   // const raycast = useForwardRaycast(thePlayer)
   const { left, right, jump } = usePersonControls()
@@ -299,7 +299,8 @@ export default function Scene2({ ...props }) {
       }
       if(levelUp.current===6){
         setPositions(level6)
-        setmaxLevelPos(-40000)
+        // theSpace.current.scale*=2
+        setmaxLevelPos(-20000)
         // speed.current = 50
         // props.play('level3')
         // props.setLevel({title: 'Level 5', text: 'We are really close to the corona now, but the solar wind and storms may affect the probe!'})
@@ -387,7 +388,7 @@ export default function Scene2({ ...props }) {
               material={materials['Sphere 2 Material']}
               castShadow
               receiveShadow
-              // scale={100000}
+              // scale={10000}
               position={[-142, -77, 95]}
               rotation={[0, 0, Math.PI]}
             />
