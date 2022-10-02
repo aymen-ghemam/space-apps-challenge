@@ -10,7 +10,7 @@ import { Object3D, Raycaster, Vector3 } from 'three'
 
 export default function Scene2({ ...props }) { 
   const { nodes, materials } = useSpline('https://prod.spline.design/iT1Og4mFFO46DKz5/scene.splinecode')
-
+  let x
   
   const theMap = useRef()
   const speed = useRef(30)
@@ -63,7 +63,7 @@ export default function Scene2({ ...props }) {
          [6500, 44, 1000],
          [7000, 44, 2000],
 
-         [5500, 44, 0],
+         [5500, 44, 500],
          [4000, 44, -1000],
          [4000, 44, 1000],
          [5500, 44, 2000],
@@ -72,7 +72,7 @@ export default function Scene2({ ...props }) {
          [4500, 44, 1000],
          [2500, 44, 2000],
 
-         [500, 44, 0],
+         [500, 44, 500],
          [2000, 44, -1000],
          [2000, 44, 1000],
          [2500, 44, 2000],
@@ -144,10 +144,10 @@ export default function Scene2({ ...props }) {
           [3500, 44, 2400],
 
 
-          [2500, 44, 0],
-          [1600, 44, -1000],
+          [2500, 44, 500],
+          [1600, 44, -100],
           [1600, 44, 1000],
-          [2500, 44, 2000],
+          [2500, 44, 1000],
           [1000, 44, 0],
           [1000, 44, -1000],
           [500, 44, 1000],
@@ -231,22 +231,41 @@ export default function Scene2({ ...props }) {
   const [maxLevelPos, setmaxLevelPos] = useState(-2000) ;
   // const raycast = useForwardRaycast(thePlayer)
   const { left, right, jump } = usePersonControls()
+  
   useEffect(()=>{
-    props.play('level1')
+    props.play('level1.mp3')
     props.setLevel({title: 'Level 1', text: "This is it, we are at the eighth revolution around the sun, not much left until we make it to the sun's atmosphere"})
   }, [])
+  useEffect(()=>{
+    astroids.current = astroids.current.map(elm => {return {...elm, rot: Math.floor(Math.random()*10) % 3}} )
+    // const x=Math.floor(Math.random()*10) 
+
+  }, [positions])
+
+  // useEffect(()=>{
+  //   astroids.current = shuffle
+  // }, [astroids.current])
 
   useFrame(() => {
     // this use frame does the satelite movment
-    if((wallLeft.current.position.z > thePlayer.current.position.z+400))
+    if((wallLeft.current.position.z > thePlayer.current.position.z+400) && !collusion.current)
       thePlayer.current.position.z+= speed.current*(Number(left) )/2
-    if((thePlayer.current.position.z-250 > wallRight.current.position.z))
+    if((thePlayer.current.position.z-250 > wallRight.current.position.z) && !collusion.current)
       thePlayer.current.position.z+= speed.current*(- Number(right))/2
     playerBody.current.rotation.z += (Math.PI / 100) * Number(right);
     playerBody.current.rotation.z -= (Math.PI / 100) * Number(left);
     // thePlayer.current.position.x+= 100 * Number(jump);
     if(jump){
+      // thePlayer.current.position.x = 12000
+      // setPositions(positions)
+      // astroids.current = []
       thePlayer.current.position.x = 12000
+      theSun.current.position.x = -30000
+      theSpace.current.position.x = -142
+      theMap.current.position.x = -10260.21;
+      collusion.current = false;
+      props.setHint({show: false, text: ''})
+      // setPositions(positions)
     }
 
     positions.forEach(elm=>{
@@ -257,24 +276,26 @@ export default function Scene2({ ...props }) {
         && !collusion.current ){
             console.log('***** astroid collusion ********');
             collusion.current = true
-            setPositions(positions)
-            thePlayer.current.position.x = 12000
-            theSun.current.position.x = -30000
-            theSpace.current.position.x = -142
-            theMap.current.position.x = -10260.21;
-            collusion.current = false;
-
+            props.play('explosion.wav');
+            props.setHint({show: true, text: 'press [space] to retry'})
+            // setPositions(positions)
+            // thePlayer.current.position.x = 12000
+            // theSun.current.position.x = -30000
+            // theSpace.current.position.x = -142
+            // theMap.current.position.x = -10260.21;
+            // collusion.current = false;
         }
     })
     
     if(thePlayer.current.position.x<maxLevelPos){
       levelUp.current++;
+      astroids.current=[]
       if(levelUp.current===2){
         wallRight.current.position.z = -1300
         wallLeft.current.position.z = 2350
         setPositions(level2)
         speed.current = 30
-        props.setLevel({title: 'Level 2'})
+        props.setLevel({title: 'Level 2'});
       } 
       if(levelUp.current===3) {
         wallRight.current.position.z = -1700
@@ -282,7 +303,7 @@ export default function Scene2({ ...props }) {
         setPositions(level3)
         setmaxLevelPos(-5000)
         speed.current = 35
-        props.play('level2')
+        props.play('level2.mp3')
         props.setLevel({title: 'Level 3', text: 'We are within the range of gravity of Venus! This shall strengthen the space Craft momentum'})
       }
       if(levelUp.current===4){
@@ -296,16 +317,20 @@ export default function Scene2({ ...props }) {
         setPositions(level5)
         setmaxLevelPos(-2000)
         // speed.current = 50
-        props.play('level3')
+        props.play('level3.mp3')
         props.setLevel({title: 'Level 5', text: 'We are really close to the corona now, but the solar wind and storms may affect the probe!'})
       }
       if(levelUp.current===6){
         setPositions(level6)
         // theSpace.current.scale*=2
-        setmaxLevelPos(-20000)
+        setmaxLevelPos(-10000)
         // speed.current = 50
         // props.play('level3')
-        // props.setLevel({title: 'Level 5', text: 'We are really close to the corona now, but the solar wind and storms may affect the probe!'})
+        props.setLevel({title: ''})
+      }
+      if (levelUp.current === 7) {
+        props.setPage(3);
+        setPositions([])
       }
       // if(levelUp===2) setPositions(level2)
       thePlayer.current.position.x = 12000
@@ -316,7 +341,7 @@ export default function Scene2({ ...props }) {
     } 
   })
 
-
+  
   
   useFrame(() => {
     // console.log(nodes)
@@ -327,6 +352,21 @@ export default function Scene2({ ...props }) {
     }
     if(!collusion.current) thePlayer.current.position.x -= speed.current;
     if(!collusion.current) theMap.current.position.x += speed.current;
+
+    astroids.current.map(elm => {
+      if(elm && elm.rotation){
+        if(elm.rot==0){
+          if(elm) elm.rotation.z -= Math.PI / 100;
+        }
+        if(elm.rot==1){
+         if(elm) elm.rotation.y -= Math.PI / 100;
+        }
+        if(elm.rot==2){
+         if(elm) elm.rotation.x -= Math.PI / 100;
+        }
+      }
+
+    })
 
   })
   return (
@@ -353,13 +393,14 @@ export default function Scene2({ ...props }) {
             <group
                 key={index}
                 // ref={astroidBody}
-                ref = {(element)=>astroids.current.push(element)}
+                // ref = {(element)=>astroids.current.push(element)}
                 name="asteroid"
                 position={pos}
                 rotation={[Math.PI / 2, 0, 0]}
                 scale={[1.16, 1.2, 1.16]}
             >
                 <mesh
+                ref = {(element)=>astroids.current.push(element)}
                 name="Sphere7"
                 geometry={nodes.Sphere7.geometry}
                 material={nodes.Sphere7.material}

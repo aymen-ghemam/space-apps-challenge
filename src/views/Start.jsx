@@ -46,7 +46,7 @@ const Start = ({setPage}) => {
         }).then(e => {
             header.current.classList.add('hidden')
             console.log('here');
-            setPage(1)
+            setPage(2)
         })
     }
 
