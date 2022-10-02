@@ -259,6 +259,8 @@ export default function Scene2({ ...props }) {
             collusion.current = true
             setPositions(positions)
             thePlayer.current.position.x = 12000
+            theSun.current.position.x = -30000
+            theSpace.current.position.x = -142
             theMap.current.position.x = -10260.21;
             collusion.current = false;
 
