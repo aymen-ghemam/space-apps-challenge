@@ -11,12 +11,15 @@ import { Object3D, Raycaster, Vector3 } from 'three'
 export default function Scene2({ ...props }) { 
   const { nodes, materials } = useSpline('https://prod.spline.design/iT1Og4mFFO46DKz5/scene.splinecode')
 
+  
   const theMap = useRef()
   const speed = useRef(30)
   const levelUp = useRef(1)
   const thePlayer = useRef()
   const wallRight = useRef()
   const wallLeft = useRef()
+  const theSun = useRef()
+  const theSpace = useRef()
   const astroids = useRef([])
   const collusion = useRef(false)
   const playerBody = useRef()
@@ -218,10 +221,13 @@ export default function Scene2({ ...props }) {
            [-500, 44, 1000],
            [0, 44, 2000],
             ]
+            const level6=[
+              [-14000, 202.94, -1144.83]
+            ]
        
 
 
-  const [positions, setPositions] = useState(level1)  
+  const [positions, setPositions] = useState(level6)  
   const [maxLevelPos, setmaxLevelPos] = useState(-2000) ;
   // const raycast = useForwardRaycast(thePlayer)
   const { left, right, jump } = usePersonControls()
@@ -291,8 +297,17 @@ export default function Scene2({ ...props }) {
         props.play('level3')
         props.setLevel({title: 'Level 5', text: 'We are really close to the corona now, but the solar wind and storms may affect the probe!'})
       }
+      if(levelUp.current===6){
+        setPositions(level6)
+        setmaxLevelPos(-40000)
+        // speed.current = 50
+        // props.play('level3')
+        // props.setLevel({title: 'Level 5', text: 'We are really close to the corona now, but the solar wind and storms may affect the probe!'})
+      }
       // if(levelUp===2) setPositions(level2)
       thePlayer.current.position.x = 12000
+      theSun.current.position.x = -30000
+      theSpace.current.position.x = -142
       theMap.current.position.x = -10260.21;
       
     } 
@@ -301,6 +316,12 @@ export default function Scene2({ ...props }) {
 
   
   useFrame(() => {
+    // console.log(nodes)
+    if(levelUp.current<6){
+      
+      if(!collusion.current) theSpace.current.position.x -= speed.current;
+      if(!collusion.current) theSun.current.position.x -= speed.current;
+    }
     if(!collusion.current) thePlayer.current.position.x -= speed.current;
     if(!collusion.current) theMap.current.position.x += speed.current;
 
@@ -347,13 +368,36 @@ export default function Scene2({ ...props }) {
             </group>
             )}
 
+            <group ref={theSun} name="SUN_v2" position={[-30000, 202.94, -10144.83]} rotation={[0.31, 0.07, -0.02]}>
+              <mesh
+                name="Sphere"
+                
+                geometry={nodes.Sphere.geometry}
+                material={nodes.Sphere.material}
+                receiveShadow
+                rotation={[-1.58, 0, 2.46]}
+                scale={18000}
+              />
+            </group>
+
+            <mesh
+              ref={theSpace}
+              name="Sphere 2"
+              geometry={nodes['Sphere 2'].geometry}
+              material={materials['Sphere 2 Material']}
+              castShadow
+              receiveShadow
+              // scale={100000}
+              position={[-142, -77, 95]}
+              rotation={[0, 0, Math.PI]}
+            />
           <mesh
             name="ending"
             geometry={nodes.ending.geometry}
             material={materials['ending Material']}
             castShadow
             receiveShadow
-            position={[-20010.79, -45.69, 0]}
+            position={[-60010.79, -45.69, 0]}
             rotation={[-Math.PI / 2, 0, -Math.PI / 2]}
             scale={[49.67, 1, 1]}
           />
@@ -361,7 +405,7 @@ export default function Scene2({ ...props }) {
             ref = {wallRight}
             name="right wall"
             geometry={nodes['right wall'].geometry}
-            material={materials['ending Material']}
+            material={materials['right wall Material']}
             position={[372.02, -19.73, -1150]}
             scale={[200, 1, 1]}
           />
@@ -369,7 +413,7 @@ export default function Scene2({ ...props }) {
             ref = {wallLeft}
             name="left wall"
             geometry={nodes['left wall'].geometry}
-            material={materials['ending Material']}
+            material={materials['left wall Material']}
             position={[460.21, 0, 1900]}
             scale={[200, 1, 1]}
           />
@@ -407,7 +451,7 @@ export default function Scene2({ ...props }) {
           shadow-camera-bottom={-500}
           position={[-138.67, 648.65, 183.29]}
         />
-        <mesh
+        {/* <mesh
           name="Sphere8"
           geometry={nodes.Sphere8.geometry}
           material={materials['Sphere8 Material']}
@@ -415,7 +459,7 @@ export default function Scene2({ ...props }) {
           receiveShadow
           position={[0, -101, -49]}
           rotation={[0, 0, Math.PI]}
-        />
+        /> */}
         <hemisphereLight name="Default Ambient Light" intensity={0.75} color="#d4d4d4" position={[0, 1, 0]} />
       </group>
     </>
